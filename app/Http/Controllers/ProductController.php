@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 
 class ProductController extends Controller
 {
@@ -34,15 +35,9 @@ class ProductController extends Controller
         return view('products.edit', compact('product'));
     }
 
-    public function update(Request $request, Product $product){
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' =>'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-        ]);
+    public function update(UpdateProductRequest $request, Product $product){
 
-        $product->update($validated);
+        $product->update($request -> validated());
 
         return redirect()->route('products.index')
                          ->with('sucess', 'Produit modifie avec succes.');
